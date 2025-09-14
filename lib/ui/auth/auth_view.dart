@@ -20,7 +20,7 @@ class _AuthViewState extends State<AuthView> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(
-              () => Form(
+          () => Form(
             key: viewModel.formKey,
             child: Center(
               child: SingleChildScrollView(
@@ -40,6 +40,8 @@ class _AuthViewState extends State<AuthView> {
                       const SizedBox(height: 16),
                       _buildAvatarUrlField(),
                     ],
+                    const SizedBox(height: 32),
+                    _buildErrorMessage(),
                     const SizedBox(height: 32),
                     _buildSubmitButton(context),
                     const SizedBox(height: 32),
@@ -96,7 +98,7 @@ class _AuthViewState extends State<AuthView> {
 
   Widget _buildPasswordField() {
     return Obx(
-          () => TextFormField(
+      () => TextFormField(
         controller: viewModel.passwordController,
         obscureText: viewModel.obscurePassword,
         textInputAction: TextInputAction.done,
@@ -170,6 +172,22 @@ class _AuthViewState extends State<AuthView> {
     );
   }
 
+  Widget _buildErrorMessage() {
+    return Obx(
+      () => Visibility(
+        visible: viewModel.errorMessage.isNotEmpty,
+        child: Text(
+          viewModel.errorMessage,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.error,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Widget _buildSubmitButton(BuildContext context) {
     return SizedBox(
       height: 50,
@@ -184,14 +202,17 @@ class _AuthViewState extends State<AuthView> {
         ),
         child: viewModel.isSubmitting
             ? const SizedBox(
-          height: 20,
-          width: 20,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        )
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             : Text(
-          viewModel.isLoginMode ? 'ENTRAR' : 'CADASTRAR',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+                viewModel.isLoginMode ? 'ENTRAR' : 'CADASTRAR',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }

@@ -83,11 +83,13 @@ class AuthViewModel extends GetxController {
     if (!valid) return;
 
     _isSubmitting.value = true;
+    _errorMessage.value = '';
     if (isLoginMode) {
       await login();
     } else {
       await register();
     }
+    _isSubmitting.value = false;
   }
 
   Future<void> login() async {
@@ -97,21 +99,29 @@ class AuthViewModel extends GetxController {
     );
 
     response.fold(
-      ifLeft: (left) {
-        _errorMessage.value = left.message;
-        print(errorMessage);
-      },
-      ifRight: (right) {
-        print(right);
-        return;
-      },
+      ifLeft: (left) => _errorMessage.value = left.message,
+      ifRight: (right) => _clearFields(),
     );
-
-    _isSubmitting.value = false;
   }
 
   Future<void> register() async {
-    _isSubmitting.value = false;
+    final response = await _repository.signUp(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
+      avatarUrl: avatarUrlController.text,
+    );
+
+    response.fold(
+      ifLeft: (left) => _errorMessage.value = left.message,
+      ifRight: (right) {
+        print(right);
+        _errorMessage.value =
+          'E-mail de confirmação enviado. Verifique sua caixa de entrada';
+        _isLoginMode.value = true;
+        _clearFields();
+      },
+    );
   }
 
   @override
@@ -129,9 +139,8 @@ class AuthViewModel extends GetxController {
     _isSubmitting.value = false;
     _clearFields();
     _obscurePassword.value = true;
+    _errorMessage.value = '';
 
-    // * update
-    // Necessário para atualizar a UI
     update();
   }
 
