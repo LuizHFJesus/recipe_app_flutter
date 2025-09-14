@@ -89,8 +89,8 @@ class _RecipesViewState extends State<RecipesView> {
                                 return Stack(
                                   children: [
                                     GestureDetector(
-                                      // onTap: () =>
-                                      //     context.go('/recipe/${recipe.id}'),
+                                      onTap: () =>
+                                          context.go('/recipe/${recipe.id}'),
                                       child: RecipeCard(recipe: recipe),
                                     ),
                                     // Positioned(
