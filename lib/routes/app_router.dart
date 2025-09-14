@@ -1,3 +1,4 @@
+import 'package:app4_receitas/ui/auth/auth_view.dart';
 import 'package:app4_receitas/ui/base_screen.dart';
 import 'package:app4_receitas/ui/favorite_recipes/favorite_recipes_view.dart';
 import 'package:app4_receitas/ui/recipe_detail/recipe_detail_view.dart';
@@ -9,8 +10,9 @@ class AppRouter {
 
   AppRouter() {
     router = GoRouter(
-      initialLocation: '/',
+      initialLocation: '/login',
       routes: [
+        GoRoute(path: '/login', builder: (context, state) => const AuthView()),
         ShellRoute(
           builder: (context, state, child) => BaseScreen(child: child),
           routes: [
