@@ -7,15 +7,19 @@ class RecipeDetailViewModel extends GetxController {
   final _repository = getIt<RecipeRepository>();
 
   final Rxn<Recipe> _recipe = Rxn<Recipe>();
+
   Recipe? get recipe => _recipe.value;
 
   final RxBool _isFavorite = false.obs;
+
   bool get isFavorite => _isFavorite.value;
 
   final RxBool _isLoading = false.obs;
+
   bool get isLoading => _isLoading.value;
 
   final RxString _errorMessage = ''.obs;
+
   String? get errorMessage => _errorMessage.value;
 
   Future<void> loadRecipe(String id) async {
@@ -45,10 +49,40 @@ class RecipeDetailViewModel extends GetxController {
   }
 
   Future<void> toggleFavorite() async {
+    // TODO: Get the current user dynamically
+    final currentUserId = '0d9a3214-76ff-4779-a12e-6938d0a0231c';
+    final recipeId = recipe!.id;
+
+    if (_isFavorite.value) {
+      await removeFromFavorites(recipeId, currentUserId);
+    } else {
+      await addToFavorites(recipeId, currentUserId);
+    }
+  }
+
+  Future<void> addToFavorites(String recipeId, String userId) async {
     try {
-      _isFavorite.value = !_isFavorite.value;
+      _isLoading.value = true;
+      _errorMessage.value = '';
+      await _repository.insertFavoriteRecipe(recipeId, userId);
+      _isFavorite.value = true;
     } catch (e) {
       _errorMessage.value = e.toString();
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  Future<void> removeFromFavorites(String recipeId, String userId) async {
+    try {
+      _isLoading.value = true;
+      _errorMessage.value = '';
+      await _repository.deleteFavoriteRecipe(recipeId, userId);
+      _isFavorite.value = false;
+    } catch (e) {
+      _errorMessage.value = e.toString();
+    } finally {
+      _isLoading.value = false;
     }
   }
 }

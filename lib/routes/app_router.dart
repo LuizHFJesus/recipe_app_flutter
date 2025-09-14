@@ -1,4 +1,5 @@
 import 'package:app4_receitas/ui/base_screen.dart';
+import 'package:app4_receitas/ui/favorite_recipes/favorite_recipes_view.dart';
 import 'package:app4_receitas/ui/recipe_detail/recipe_detail_view.dart';
 import 'package:app4_receitas/ui/recipes/recipes_view.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,10 @@ class AppRouter {
               path: '/recipe/:id',
               builder: (context, state) =>
                   RecipeDetailView(id: state.pathParameters['id']!),
+            ),
+            GoRoute(
+              path: '/favorites',
+              builder: (context, state) => FavoriteRecipesView(),
             ),
           ],
         ),

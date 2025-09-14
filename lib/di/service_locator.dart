@@ -1,5 +1,7 @@
 import 'package:app4_receitas/data/repositories/recipe_repository.dart';
 import 'package:app4_receitas/data/services/recipe_service.dart';
+import 'package:app4_receitas/ui/favorite_recipes/favorite_recipes_view.dart';
+import 'package:app4_receitas/ui/favorite_recipes/favorite_recipes_viewmodel.dart';
 import 'package:app4_receitas/ui/recipes/recipes_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -17,5 +19,8 @@ Future<void> injectDependencies() async {
   getIt.registerLazySingleton<RecipesViewModel>(() => RecipesViewModel());
   getIt.registerLazySingleton<RecipeDetailViewModel>(
     () => RecipeDetailViewModel(),
+  );
+  getIt.registerLazySingleton<FavoriteRecipesViewModel>(
+    () => FavoriteRecipesViewModel(),
   );
 }

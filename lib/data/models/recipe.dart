@@ -41,7 +41,6 @@ class Recipe {
   // Utiliza o método _parseJsonList para garantir que os campos
   // de lista sejam tratados corretamente.
   factory Recipe.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Recipe(
       id: json['id'] as String,
       name: json['name'] as String,
